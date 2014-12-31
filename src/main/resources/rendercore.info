@@ -1,0 +1,16 @@
+[
+{
+  "modid": "RenderCore",
+  "name": "RenderCore",
+  "description": "Coremod that adds rendering hooks that were removed in the 1.8 update.",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["Parker8283"],
+  "credits": "RainWarrior/fry for his amazing work",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
