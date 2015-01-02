@@ -42,6 +42,12 @@ public interface IWorldRenderer {
     boolean onBlockRender(RenderChunk renderChunk, IBlockState state, IBlockAccess world, BlockPos pos);
 
     /**
+     * Called when the specified block needs a brightness render update.<br/>
+     * Might be called from render update thread.
+     */
+    void onBlockRenderBrightness(IBlockState state, float brightness);
+
+    /**
      * Called after the blocks in the specified chunk (and layer) are re-rendered.<br/>
      * Might be called from render update thread.
      */

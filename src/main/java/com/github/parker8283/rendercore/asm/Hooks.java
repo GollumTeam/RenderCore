@@ -61,4 +61,13 @@ public class Hooks {
         }
     }
 
+    public static void onBlockRenderBrightness(int renderType, IBlockState state, float brightness) {
+        if(renderType == RenderCore.IWR_RENDER_ID) {
+            IWorldRenderer worldRenderer = RenderCore.getWorldRendererForBlock(state.getBlock());
+            if(worldRenderer != null) {
+                worldRenderer.onBlockRenderBrightness(state, brightness);
+            }
+        }
+    }
+
 }

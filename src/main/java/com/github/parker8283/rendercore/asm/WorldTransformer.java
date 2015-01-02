@@ -1,7 +1,7 @@
 package com.github.parker8283.rendercore.asm;
 
-import static org.objectweb.asm.Opcodes.*;
 import static com.github.parker8283.rendercore.asm.CorePlugin.log;
+import static org.objectweb.asm.Opcodes.*;
 
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.*;
@@ -16,6 +16,27 @@ public class WorldTransformer implements IClassTransformer {
 
     @Override
     public byte[] transform(String name, String transformedName, byte[] basicClass) {
+        if(transformedName.equals("net.minecraft.client.renderer.BlockRendererDispatcher")) {
+            log.info("Found BlockRendererDispatcher class");
+            boolean isObfuscated = !name.equals(transformedName);
+            ClassNode classNode = ASMHelper.readClassFromBytes(basicClass);
+            MethodNode methodNode = ASMHelper.findMethodNodeOfClass(classNode, ObfHelper.getCorrectFieldOrMethodName(isObfuscated, "a", "func_175016_a", "renderBlockBrightness"), "(" + ObfHelper.getDescriptor("net.minecraft.block.state.IBlockState") + "F)V");
+            if(methodNode != null) {
+                log.info("Found renderBlockBrightness method");
+                AbstractInsnNode targetNode = ASMHelper.findFirstInstructionWithOpcode(methodNode, ILOAD);
+                InsnList toInject = new InsnList();
+                toInject.add(new VarInsnNode(ILOAD, 3));
+                toInject.add(new VarInsnNode(ALOAD, 1));
+                toInject.add(new VarInsnNode(FLOAD, 2));
+                toInject.add(new MethodInsnNode(INVOKESTATIC, Type.getInternalName(Hooks.class), "onBlockRenderBrightness", "(I" + ObfHelper.getDescriptor("net.minecraft.block.state.IBlockState") + "F)V", false));
+                methodNode.instructions.insertBefore(targetNode, toInject);
+                log.info("One third of World rendering hook injected");
+            } else {
+                log.fatal("Could not find renderBlockBrightness method. Because this is a critical part of many mods, gameplay will end. Please report to Parker8283.", new RuntimeException("Could not find renderBlockBrightness method in BlockRendererDispatcher class"));
+                FMLCommonHandler.instance().exitJava(1, false);
+            }
+            return ASMHelper.writeClassToBytes(classNode);
+        }
         if(transformedName.equals("net.minecraft.client.renderer.RenderGlobal")) {
             log.info("Found RenderGlobal class");
             boolean isObfuscated = !name.equals(transformedName);
@@ -48,7 +69,7 @@ public class WorldTransformer implements IClassTransformer {
                 toInject.add(new VarInsnNode(ALOAD, 5));
                 toInject.add(new MethodInsnNode(INVOKESTATIC, Type.getInternalName(Hooks.class), "onPostRenderWorldLayer", "(" + ObfHelper.getDescriptor("net.minecraft.client.renderer.RenderGlobal") + "Ljava/util/List;" + ObfHelper.getDescriptor("net.minecraft.client.renderer.ChunkRenderContainer") + ObfHelper.getDescriptor("net.minecraft.util.EnumWorldBlockLayer") + "DI" + ObfHelper.getDescriptor("net.minecraft.entity.Entity") + ")V", false));
                 methodNode.instructions.insertBefore(targetNode, toInject);
-                log.info("Half of World rendering hook injected");
+                log.info("Two thirds of World rendering hook injected");
             } else {
                 log.fatal("Could not find renderWorldLayer method. Because this is a critical part of many mods, gameplay will end. Please report to Parker8283.", new RuntimeException("Could not find renderWorldLayer method in RenderGlobal class"));
                 FMLCommonHandler.instance().exitJava(1, false);
@@ -77,7 +98,7 @@ public class WorldTransformer implements IClassTransformer {
                 toInject.add(new FieldInsnNode(GETFIELD, ObfHelper.getInternalClassName("net.minecraft.client.renderer.chunk.RenderChunk"), ObfHelper.getCorrectFieldOrMethodName(isObfuscated, "f", "field_178586_f", "position"), ObfHelper.getDescriptor("net.minecraft.util.BlockPos")));
                 toInject.add(new MethodInsnNode(INVOKESTATIC, Type.getInternalName(Hooks.class), "onPreRebuildChunk", "(" + ObfHelper.getDescriptor("net.minecraft.client.renderer.chunk.RenderChunk") + ObfHelper.getDescriptor("net.minecraft.util.EnumWorldBlockLayer") + ObfHelper.getDescriptor("net.minecraft.util.BlockPos") + ")V", false));
                 methodNode.instructions.insertBefore(targetNode, toInject);
-                log.info("Three-quarters of World rendering hook injected");
+                log.info("Half of final World rendering hook injected");
             } else {
                 log.fatal("Could not find resortTransparency method. Because this is a critical part of many mods, gameplay will end. Please report to Parker8283.", new RuntimeException("Could not find resortTransparency method in RenderChunk class"));
                 FMLCommonHandler.instance().exitJava(1, false);
