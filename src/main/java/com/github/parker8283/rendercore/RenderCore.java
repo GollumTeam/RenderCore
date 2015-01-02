@@ -39,34 +39,42 @@ public class RenderCore {
      *     <li>{@code -DrenderCore.disableWorldRendering} disables the IWorldRenderer</li>
      *     <li>{@code -DrenderCore.disableItemRendering} disables the IDynamicItemModel</li>
      *     <li>{@code -DrenderCore.disableTEISRRendering} disables the TEISR hooks</li>
+     *     <li>{@code -DrenderCore.disableBlockModelRegisterEvent} disables the BlockModelRegisterEvent</li>
      * </ul>
      *
      * Modders, it's up to you to decide if you crash or continue with this knowledge. There are individual methods for each feature to check if you'd like.
      * @return {@code true} if there has been a feature from the mod disabled.
      */
     public static boolean areFeaturesDisabled() {
-        return !(CorePlugin.isWorldRenderingEnabled() && CorePlugin.isDynamicItemRenderingEnabled() && CorePlugin.areCustomTEISRCallsEnabled());
+        return !(CorePlugin.isWorldRenderingEnabled() && CorePlugin.isDynamicItemRenderingEnabled() && CorePlugin.areCustomTEISRCallsEnabled() && CorePlugin.isBlockModelRegisterEventEnabled());
     }
 
     /**
-     * @return {@code true} if the IWorldRenderer has been disabled by the user.
+     * @return {@code false} if the IWorldRenderer has been disabled by the user.
      */
     public static boolean isWorldRenderingEnabled() {
         return CorePlugin.isWorldRenderingEnabled();
     }
 
     /**
-     * @return {@code true} if the IDynamicItemModel has been disabled by the user.
+     * @return {@code false} if the IDynamicItemModel has been disabled by the user.
      */
     public static boolean isItemRenderingEnable() {
         return CorePlugin.isDynamicItemRenderingEnabled();
     }
 
     /**
-     * @return {@code true} if the TEISR hooks have been disabled by the user.
+     * @return {@code false} if the TEISR hooks have been disabled by the user.
      */
     public static boolean isTEISRRenderingEnabled() {
         return CorePlugin.areCustomTEISRCallsEnabled();
+    }
+
+    /**
+     * @return {@code false} if the BlockModelRegisterEvent has been disabled by the user.
+     */
+    public static boolean isBMREventEnabled() {
+        return CorePlugin.isBlockModelRegisterEventEnabled();
     }
 
     // Now the good stuff :P

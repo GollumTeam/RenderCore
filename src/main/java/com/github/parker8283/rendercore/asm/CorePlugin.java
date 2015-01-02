@@ -23,6 +23,7 @@ public class CorePlugin extends DummyModContainer implements IFMLLoadingPlugin {
     private static boolean worldRenderingEnabled = !Boolean.parseBoolean(System.getProperty("renderCore.disableWorldRendering", "false"));
     private static boolean dynamicItemRenderingEnabled = !Boolean.parseBoolean(System.getProperty("renderCore.disableItemRendering", "false"));
     private static boolean customTEISRCallsEnabled = !Boolean.parseBoolean(System.getProperty("renderCore.disableTEISRRendering", "false"));
+    private static boolean blockModelRegisterEventEnabled = !Boolean.parseBoolean(System.getProperty("renderCore.disableBlockModelRegisterEvent", "false"));
 
     public CorePlugin() {
         super(MetadataCollection.from(MetadataCollection.class.getResourceAsStream("/rendercore.info"), RenderCore.MOD_ID).getMetadataForId(RenderCore.MOD_ID, null));
@@ -71,25 +72,35 @@ public class CorePlugin extends DummyModContainer implements IFMLLoadingPlugin {
         return customTEISRCallsEnabled;
     }
 
+    public static boolean isBlockModelRegisterEventEnabled() {
+        return blockModelRegisterEventEnabled;
+    }
+
     private String[] buildTransformerList() {
         List<String> ret = Lists.newArrayList();
 
         if(worldRenderingEnabled) {
             ret.add(WorldTransformer.class.getName());
         } else {
-            log.warn("World rendering hooks turned off. This may cause mods to crash.");
+            log.warn("World rendering hooks turned off. This may cause mods to act funny.");
         }
 
         if(dynamicItemRenderingEnabled) {
             ret.add(ItemTransformer.class.getName());
         } else {
-            log.warn("Item rendering hooks turned off. This may cause mods to crash.");
+            log.warn("Item rendering hooks turned off. This may cause mods to act funny.");
         }
 
         if(customTEISRCallsEnabled) {
             ret.add(TEISRTransformer.class.getName());
         } else {
-            log.warn("TEISR rendering hooks turned off. This may cause mods to crash.");
+            log.warn("TEISR rendering hooks turned off. This may cause mods to act funny.");
+        }
+
+        if(blockModelRegisterEventEnabled) {
+            ret.add(BMRETransformer.class.getName());
+        } else {
+            log.warn("BlockModelRegisterEvent turned off. This may cause mods to act funny.");
         }
 
         return ret.toArray(new String[ret.size()]);

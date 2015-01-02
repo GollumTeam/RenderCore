@@ -3,6 +3,7 @@ package com.github.parker8283.rendercore.asm;
 import java.util.List;
 
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.BlockModelShapes;
 import net.minecraft.client.renderer.ChunkRenderContainer;
 import net.minecraft.client.renderer.RenderGlobal;
 import net.minecraft.client.renderer.chunk.CompiledChunk;
@@ -13,7 +14,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.common.MinecraftForge;
 
+import com.github.parker8283.rendercore.BlockModelRegisterEvent;
 import com.github.parker8283.rendercore.IDynamicItemModel;
 import com.github.parker8283.rendercore.IWorldRenderer;
 import com.github.parker8283.rendercore.RenderCore;
@@ -70,4 +73,7 @@ public class Hooks {
         }
     }
 
+    public static void onBlockModelRegister(BlockModelShapes bms) {
+        MinecraftForge.EVENT_BUS.post(new BlockModelRegisterEvent(bms));
+    }
 }
