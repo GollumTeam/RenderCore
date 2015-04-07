@@ -96,7 +96,7 @@ public class WorldTransformer implements IClassTransformer {
                 toInject.add(new FieldInsnNode(GETSTATIC, ObfHelper.getInternalClassName("net.minecraft.util.EnumWorldBlockLayer"), isObfuscated ? "d" : "TRANSLUCENT", ObfHelper.getDescriptor("net.minecraft.util.EnumWorldBlockLayer")));
                 toInject.add(new VarInsnNode(ALOAD, 0));
                 toInject.add(new FieldInsnNode(GETFIELD, ObfHelper.getInternalClassName("net.minecraft.client.renderer.chunk.RenderChunk"), ObfHelper.getCorrectFieldOrMethodName(isObfuscated, "f", "field_178586_f", "position"), ObfHelper.getDescriptor("net.minecraft.util.BlockPos")));
-                toInject.add(new MethodInsnNode(INVOKESTATIC, Type.getInternalName(Hooks.class), "onPreRebuildChunk", "(" + ObfHelper.getDescriptor("net.minecraft.client.renderer.chunk.RenderChunk") + ObfHelper.getDescriptor("net.minecraft.util.EnumWorldBlockLayer") + ObfHelper.getDescriptor("net.minecraft.util.BlockPos") + ")V", false));
+                toInject.add(new MethodInsnNode(INVOKESTATIC, Type.getInternalName(Hooks.class), "onPostRebuildChunk", "(" + ObfHelper.getDescriptor("net.minecraft.client.renderer.chunk.RenderChunk") + ObfHelper.getDescriptor("net.minecraft.util.EnumWorldBlockLayer") + ObfHelper.getDescriptor("net.minecraft.util.BlockPos") + ")V", false));
                 methodNode.instructions.insertBefore(targetNode, toInject);
                 log.info("Half of final World rendering hook injected");
             } else {
@@ -109,21 +109,21 @@ public class WorldTransformer implements IClassTransformer {
                 AbstractInsnNode targetNode = ASMHelper.findPreviousInstructionWithOpcode(ASMHelper.findLastInstructionWithOpcode(methodNode, INVOKESPECIAL), INVOKESPECIAL).getPrevious().getPrevious().getPrevious();
                 InsnList toInject = new InsnList();
                 toInject.add(new VarInsnNode(ALOAD, 0));
-                toInject.add(new VarInsnNode(ALOAD, 15));
+                toInject.add(new VarInsnNode(ALOAD, 18));
                 toInject.add(new VarInsnNode(ALOAD, 0));
                 toInject.add(new FieldInsnNode(GETFIELD, ObfHelper.getInternalClassName("net.minecraft.client.renderer.chunk.RenderChunk"), ObfHelper.getCorrectFieldOrMethodName(isObfuscated, "f", "field_178586_f", "position"), ObfHelper.getDescriptor("net.minecraft.util.BlockPos")));
                 toInject.add(new MethodInsnNode(INVOKESTATIC, Type.getInternalName(Hooks.class), "onPreRebuildChunk", "(" + ObfHelper.getDescriptor("net.minecraft.client.renderer.chunk.RenderChunk") + ObfHelper.getDescriptor("net.minecraft.util.EnumWorldBlockLayer") + ObfHelper.getDescriptor("net.minecraft.util.BlockPos") + ")V", false));
                 methodNode.instructions.insertBefore(targetNode, toInject);
                 targetNode = ASMHelper.findPreviousInstructionWithOpcode(ASMHelper.findLastInstructionWithOpcode(methodNode, INVOKESTATIC), INVOKESTATIC);
                 toInject.add(new VarInsnNode(ALOAD, 0));
-                toInject.add(new VarInsnNode(ALOAD, 15));
+                toInject.add(new VarInsnNode(ALOAD, 18));
                 toInject.add(new VarInsnNode(ALOAD, 13));
                 toInject.add(new VarInsnNode(ALOAD, 9));
                 toInject.add(new VarInsnNode(ALOAD, 12));
                 toInject.add(new VarInsnNode(ALOAD, 5));
                 toInject.add(new MethodInsnNode(INVOKESTATIC, Type.getInternalName(Hooks.class), "onBlockRender", "(" + ObfHelper.getDescriptor("net.minecraft.client.renderer.chunk.RenderChunk") + ObfHelper.getDescriptor("net.minecraft.util.EnumWorldBlockLayer") + ObfHelper.getDescriptor("net.minecraft.block.state.IBlockState") + ObfHelper.getDescriptor("net.minecraft.world.IBlockAccess") + ObfHelper.getDescriptor("net.minecraft.util.BlockPos") + ObfHelper.getDescriptor("net.minecraft.client.renderer.chunk.CompiledChunk") + ")V", false));
                 methodNode.instructions.insertBefore(targetNode, toInject);
-                targetNode = ASMHelper.findLastInstructionWithOpcode(methodNode, IINC);
+                targetNode = ASMHelper.findLastInstructionWithOpcode(methodNode, IINC).getPrevious().getPrevious().getPrevious();
                 toInject.add(new VarInsnNode(ALOAD, 0));
                 toInject.add(new VarInsnNode(ALOAD, 15));
                 toInject.add(new VarInsnNode(ALOAD, 0));

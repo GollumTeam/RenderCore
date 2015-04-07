@@ -17,25 +17,24 @@ buildscript {
 
 apply plugin: 'forge'
 
-version = "1.1.0"
-group= "com.github.parker8283" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+version = "1.1.1"
+group = "com.github.parker8283"
 archivesBaseName = "RenderCore"
 
 minecraft {
-    version = "1.8-11.14.0.1280-1.8"
+    version = "1.8-11.14.1.1334"
     runDir = "run"
-    mappings = "snapshot_20141226"
+    mappings = "stable_16"
 }
 
-processResources
-{
+processResources{
     // this will ensure that this task is redone when the versions change.
     inputs.property "version", project.version
     inputs.property "mcversion", project.minecraft.version
 
     // replace stuff in mcmod.info, nothing else
     from(sourceSets.main.resources.srcDirs) {
-        include 'mcmod.info'
+        include '*.info'
                 
         // replace version and mcversion
         expand 'version':project.version, 'mcversion':project.minecraft.version
@@ -43,7 +42,7 @@ processResources
         
     // copy everything else, thats not the mcmod.info
     from(sourceSets.main.resources.srcDirs) {
-        exclude 'mcmod.info'
+        exclude '*.info'
     }
 }
 

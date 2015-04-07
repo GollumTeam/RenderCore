@@ -102,7 +102,9 @@ public abstract class PatchedRenderChunk extends RenderChunk {
                     }
                 }
 
-                EnumWorldBlockLayer enumworldblocklayer1 = block.getBlockLayer();
+                for(EnumWorldBlockLayer enumworldblocklayer1 : EnumWorldBlockLayer.values()) {
+                    if(!block.canRenderInLayer(enumworldblocklayer1)) continue;
+                    net.minecraftforge.client.ForgeHooksClient.setRenderLayer(enumworldblocklayer1);
                 int i = enumworldblocklayer1.ordinal();
 
                 if (block.getRenderType() != -1)
@@ -126,6 +128,7 @@ public abstract class PatchedRenderChunk extends RenderChunk {
                     {
                         compiledchunk.setLayerUsed(enumworldblocklayer1);
                     }
+                }
                 }
             }
 
