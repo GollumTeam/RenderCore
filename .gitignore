@@ -2,6 +2,7 @@
 /.gradle
 /build
 /run
+/eclipse/
 
 # Eclipse
 .classpath
