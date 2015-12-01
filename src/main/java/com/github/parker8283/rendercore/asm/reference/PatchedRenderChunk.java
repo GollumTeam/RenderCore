@@ -96,7 +96,7 @@ public abstract class PatchedRenderChunk extends RenderChunk {
                 {
                     TileEntity tileentity = regionrendercache.getTileEntity(new BlockPos(mutableblockpos));
 
-                    if (tileentity != null && TileEntityRendererDispatcher.instance.hasSpecialRenderer(tileentity))
+                    if (tileentity != null && TileEntityRendererDispatcher.instance.getSpecialRenderer(tileentity) != null)
                     {
                         compiledchunk.addTileEntity(tileentity);
                     }
