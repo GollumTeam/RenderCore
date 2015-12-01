@@ -16,7 +16,7 @@ import com.github.parker8283.rendercore.asm.helper.ObfHelper;
 import com.google.common.collect.Lists;
 import com.google.common.eventbus.EventBus;
 
-@IFMLLoadingPlugin.MCVersion("1.8") //Technically doesn't matter as this will crash and burn in versions prior to 1.8, but meh.
+@IFMLLoadingPlugin.MCVersion("1.8.8") //Technically doesn't matter as this will crash and burn in versions prior to 1.8, but meh.
 @IFMLLoadingPlugin.TransformerExclusions({"com.github.parker8283.rendercore.asm."})
 public class CorePlugin extends DummyModContainer implements IFMLLoadingPlugin {
     public static Logger log = LogManager.getLogger(RenderCore.MOD_ID);

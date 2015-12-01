@@ -51,8 +51,15 @@ processResources{
     }
 }
 
+jar {
+    manifest {
+        attributes "FMLCorePlugin": "com.github.parker8283.rendercore.asm.CorePlugin"
+    }
+    version = "${project.minecraft.version}-${project.version}"
+}
+
 task unmappedjar (type: Copy, dependsOn: ':jar') {
-    from 'build/libs/'+archivesBaseName+'-'+version+'.jar'
+    from 'build/libs/'+archivesBaseName+'-'+project.minecraft.version+'-'+version+'.jar'
     into 'build/libs/'
     rename { String fileName ->
         fileName.replace(".jar", "-unmapped.jar")
@@ -60,13 +67,6 @@ task unmappedjar (type: Copy, dependsOn: ':jar') {
 }
 build.dependsOn unmappedjar
 genSrgs.shouldRunAfter unmappedjar
-
-jar {
-    manifest {
-        attributes "FMLCorePlugin": "com.github.parker8283.rendercore.asm.CorePlugin"
-    }
-    version = "${project.minecraft.version}-${project.version}"
-}
 
 task sourcesJar(type: Jar) {
     from sourceSets.main.allJava
